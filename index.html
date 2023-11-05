@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reconciliation Proto</title>
+    <!-- <link rel="preload" href="fonts/exo2-regular.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="fonts/exo2-semibold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="fonts/exo2-bold.woff2" as="font" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <span class="header__logo"> </span>
+    </header>
+    <div class="container main-container">
+      <div class="container invoice-numbers-container">
+        <p class="input-field-title">Reconciled Entries</p>
+        <div class="entries-field reconciled-entries-filed">
+          </div>
+        </div>
+      </div>
+      <div class="container input-container">
+        <div class="journal-entries">
+          <p class="input-field-title">Journal Entries</p>
+          <div class="entries-field journal-entries-field"></div>
+        </div>
+        <div class="button-container">
+          <button class="execute">Reconcile</button>
+        </div>
+        <div class="payment-entries">
+          <p class="input-field-title">Payment Entries</p>
+          <div class="entries-field payment-entries-field">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span class="header__logo"> </span>
+    </footer>
+
+    <template id="entry">
+      <div class="container entry-container">
+        <div class="container entry" data-id="" data-amount="">
+          <div class="entry-amount">test amount</div>
+          <div class="entry-id">test id</div>
+        </div>
+      </div>
+    </template>
+
+    <template id="reconciled-entry">
+      <div class="container entry-container">
+        <div class="container entry" data-id="" data-amount="">
+          <div class="calculation">calculation</div>
+          <div class="entry-ids">test ids</div>
+        </div>
+      </div>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
