@@ -26,10 +26,13 @@ const MOCK_DATA = {
 };
 
 let entriesToReconcile = [];
+let savedReconciledEntries = [];
 
 const journalEntriesElement = document.querySelector('.journal-entries-field');
 const paymentEntriesElement = document.querySelector('.payment-entries-field');
-const reconciledEntriesElement = document.querySelector('.reconciled-entries-filed');
+const reconciledEntriesElement = document.querySelector(
+  '.reconciled-entries-filed'
+);
 const entryTemplate = document.querySelector('#entry').content;
 const reconciledEntryTemplate =
   document.querySelector('#reconciled-entry').content;
@@ -71,7 +74,7 @@ MOCK_DATA.payment_entries.forEach((entry) => {
 });
 
 const renderReconciledEntry = (entriesToReconcile) => {
-  let reconciledEntriesIds = []
+  let reconciledEntriesIds = [];
   const reconciledEntryElement = reconciledEntryTemplate.cloneNode(true);
   const calculation = reconciledEntryElement.querySelector('.calculation');
   calculation.textContent = calculate(entriesToReconcile);
@@ -80,10 +83,17 @@ const renderReconciledEntry = (entriesToReconcile) => {
   const ids = reconciledEntryElement.querySelector('.entry-ids');
   entriesToReconcile.forEach((entry) => {
     reconciledEntriesIds.push(entry.id);
-  })
+  });
   ids.textContent = reconciledEntriesIds.join(';');
-  reconciledEntryElement.querySelector('.entry').dataset.id = Math.random();
-  reconciledEntriesElement.appendChild(reconciledEntryElement);
+  const generatedID = Math.random();
+  reconciledEntryElement.querySelector('.entry').dataset.id = generatedID;
+  if (reconciledEntriesIds.length !== 0) {
+    savedReconciledEntries.push({
+      entries: entriesToReconcile,
+      identity: generatedID,
+    });
+    reconciledEntriesElement.appendChild(reconciledEntryElement);
+  }
 };
 
 const entryClickHandler = (elt) => {
@@ -98,6 +108,23 @@ const entryClickHandler = (elt) => {
       type: elt.dataset.type,
     });
   }
+};
+
+const reconciledEntryClickHandler = (elt) => {
+  savedReconciledEntries.forEach((entry) => {
+    if (entry.identity === Number(elt.parentNode.dataset.id)) {
+      entry.entries.forEach((entry) => {
+        if (entry.type === 'journal') {
+          renderEntry(entry, journalEntriesElement)
+        } else if (entry.type === 'payment') {
+          renderEntry(entry, paymentEntriesElement)
+        } else {
+          throw new Error ('incorrect entry type')
+        }
+      });
+    }
+  });
+  elt.parentNode.parentNode.remove();
 };
 
 const selectedToggler = (elt) => {
@@ -120,6 +147,15 @@ entries.forEach((entry) => {
 });
 
 executeButton.addEventListener('click', () => {
-  console.log(entriesToReconcile);
   renderReconciledEntry(entriesToReconcile);
+  document.querySelectorAll('.selected').forEach((element) => {
+    element.parentNode.remove();
+  });
+  entriesToReconcile = [];
+});
+
+reconciledEntriesElement.addEventListener('click', (elt) => {
+  if (elt.target.classList.contains('unreconcile')) {
+    reconciledEntryClickHandler(elt.target);
+  }
 });

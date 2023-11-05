@@ -82,7 +82,7 @@ p {
     cursor: pointer;
 }
 
-.entry-amount, .entry-id, .calculation, .entry-ids {
+.entry-amount, .entry-id, .calculation, .entry-ids, .unreconcile {
     width: 100%;
     text-align: center;
 }
